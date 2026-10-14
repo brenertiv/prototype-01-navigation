@@ -134,6 +134,13 @@ the URL, so deep links and the back button keep the section (SYS-NAVPAT-02, ST-N
   on the ready-made default for their role (MOD-WS-01), which is the only one
   they have. This differs from the Workspace spec's Panel and pages and from
   MOD-WS-45 and 46, which define three artefact types kept in a library.
+- **No panel for upgradable sections (2026-10-14).** Tenant Billing and
+  Maintenance open their upgrade page with no panel, docked or not, and never
+  peek. On a phone, choosing one closes the drawer.
+- **Rail tooltips (2026-10-14).** Each rail item shows its name in a tooltip on
+  hover or focus when the panel is docked, or when the item has no panel
+  (the upgradable sections and the Company button). While the panel is
+  collapsed, items with a panel peek instead of showing a tooltip.
 
 ## Stack
 

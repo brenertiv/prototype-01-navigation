@@ -19,7 +19,7 @@ Open http://localhost:5173. `npm run build` type-checks and bundles.
 
 - **Click every rail item.** Workspace, Building Info and People each swap the
   panel and the URL. Tenant Billing and Maintenance are marked Missing and open
-  an upgrade page.
+  an upgrade page with no panel, so the page takes the full canvas.
 - **Start at Workspace, the app's home.** Its panel lists workspaces, and each
   one is a canvas that can be a dashboard, a report or a plan. Open one, leave
   for another section, then click Workspace on the rail: you land back on it.
@@ -29,6 +29,10 @@ Open http://localhost:5173. `npm run build` type-checks and bundles.
 - **Collapse the panel** (the toggle in the panel header), then hover or click a
   rail item: the panel peeks over the canvas without moving it. Click the canvas
   or press Escape to dismiss. The docked state survives a reload.
+- **Hover the rail.** While the panel is docked, every rail item shows its name
+  in a tooltip. While it is collapsed, items with a panel peek instead, and the
+  items with no panel (Tenant Billing, Maintenance and the Company button) still
+  show their name.
 - **Open the assistant** (sparkle, top right). The drawer names what it is bound
   to and stays open across pages until you close it. That state survives a reload too.
 - **Change scope** from the pill in the top bar. The scope rides in the URL as
@@ -74,7 +78,7 @@ Change the navigation by editing the data, not the components.
 | SYS-NAVPAT-01 three regions | `Shell.tsx` | Rail, panel, canvas |
 | SYS-NAVPAT-02 rail changes the URL | `Rail.tsx` | Links, not buttons; back button and deep links work |
 | SYS-NAVPAT-03 clear which section | `Rail.tsx`, `Panel.tsx`, `shell.css` | Filled icon, tinted background, edge bar, `aria-current`; the panel header names the section |
-| SYS-NAVPAT-04 Missing sections | `Rail.tsx`, `UpgradePage.tsx` | Dashed border with a plus; the upgrade page has the three slots the spec names |
+| SYS-NAVPAT-04 Missing sections | `Rail.tsx`, `UpgradePage.tsx`, `Shell.tsx` | Dashed border with a plus; no panel, so the upgrade page takes the full canvas; the upgrade page has the three slots the spec names |
 | SYS-NAVPAT-05 overflow menu | not built | Empty in the MVP and not shown, per the spec |
 | SYS-NAVPAT-06 Account and Notifications fixed at the foot | `Rail.tsx`, `shell.css` | Separated from the sections by a rule; the account panel has the Personal and Admin-only Account settings groups and the footer |
 | SYS-NAVPAT-07 Company button opens a modal | `CompanyModal.tsx` | Switches company only |
@@ -82,7 +86,7 @@ Change the navigation by editing the data, not the components.
 | SYS-NAVPAT-09 one rail for every persona | `sections.ts` | The rail does not change per persona |
 | SYS-NAVPAT-10 one panel template | `Panel.tsx` | Header, primary action, groups, rows, footer |
 | SYS-NAVPAT-11 docked state persists | `preferences.tsx` | localStorage stands in for personalization; the drawer state persists the same way (SYS-AI-11) |
-| SYS-NAVPAT-12 peek while collapsed | `Shell.tsx`, `Panel.tsx` | Hover, click or focus a rail item; no layout shift |
+| SYS-NAVPAT-12 peek while collapsed | `Shell.tsx`, `Panel.tsx` | Hover, click or focus a rail item; no layout shift. Missing sections have no panel, so they never peek |
 | SYS-NAVPAT-13 panel per section from its spec | `sections.ts` | One entry per section |
 | Workspace as a list of workspaces | `workspaces.ts`, `WorkspaceList.tsx`, `WorkspacePage.tsx` | **Differs from the spec.** Workspace is the app's home. Its panel is one flat list of workspaces, with no Home, Dashboards, Reports, Plans or Gallery groups; a workspace is one canvas that can hold a dashboard, a report or a plan. The rail item lands on the last workspace opened, or on the role's default for a new user. The spec has a library per artefact type (MOD-WS-45, 46) and a Home group |
 | People panel, flat with filters | `sections.ts`, `PlaceholderPage.tsx` | **Differs from the spec.** People's panel has no collapsible groups; each item's former sub-pages are filters over its records. SYS-NAVPAT-10 and the People spec's Panel and pages both describe collapsible groups, so adopting this needs a decision-log entry and a spec change |
@@ -90,7 +94,7 @@ Change the navigation by editing the data, not the components.
 | SYS-NAVPAT-21 no canvas chrome | `PlaceholderPage.tsx` | The page owns its title |
 | SYS-NAVPAT-22 assistant toggle and drawer | `AssistantDrawer.tsx` | Bound to the page or the open artefact; a bottom sheet on phones |
 | SYS-NAVPAT-30 phone drawer | `Shell.tsx`, `shell.css` | Rail and panel as one full-height drawer; row actions always shown; rail labels shown since there is no hover |
-| SYS-NAVPAT-31 keyboard and labels | throughout | Skip link, focus ring, `aria-label` on icon-only controls, the title attribute is only the tooltip |
+| SYS-NAVPAT-31 keyboard and labels | throughout | Skip link, focus ring, `aria-label` on icon-only controls. The rail tooltip shows the item's name on hover or focus when the panel is docked or the item has no panel; it is hidden from screen readers because the `aria-label` is the name |
 | SYS-SCOPE-10, 13, 15 scope persists and lives in the URL | `scope.ts` | Every link carries `?scope=` along |
 | SYS-SCOPE-12 say so and offer the fix | `PlaceholderPage.tsx` | Record pages at portfolio scope; portfolio-only pages at property scope |
 | SYS-SCOPE-30 to 33 where am I | `TopBar.tsx` | Level type, name, path, property count; portfolio and property look different; hidden where scope does not apply |

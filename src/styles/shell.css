@@ -241,6 +241,22 @@ code {
   border-color: var(--nav-on-selected);
 }
 
+/* Rail tooltip: the item's name. Fixed so the scrolling list can't clip it. */
+.rail-tooltip {
+  position: fixed;
+  transform: translateY(-50%);
+  z-index: 70;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--text-primary);
+  color: var(--surface-page);
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: var(--shadow-raised);
+}
+
 /* Phone variant of the rail: labels shown, since there is no hover (SYS-NAVPAT-30). */
 .rail--phone {
   width: 76px;
@@ -497,9 +513,6 @@ code {
   flex-direction: column;
   gap: 8px;
 }
-.panel-message .rows {
-  margin: 0 -8px;
-}
 .skeleton {
   padding: 0 8px;
 }
@@ -754,6 +767,13 @@ code {
   position: absolute;
   inset: 0;
   background: rgba(0, 0, 0, 0.4);
+}
+.mobile-drawer-body.mobile-drawer-body--rail-only {
+  width: auto;
+}
+.mobile-drawer-close {
+  padding: 10px 8px;
+  background: var(--surface-panel);
 }
 .mobile-drawer-body {
   position: relative;

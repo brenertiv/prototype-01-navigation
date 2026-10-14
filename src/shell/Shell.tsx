@@ -5,6 +5,7 @@ import { PHONE_QUERY, useMediaQuery } from '../state/media';
 import { usePrefs } from '../state/preferences';
 import { AssistantDrawer } from './AssistantDrawer';
 import { CompanyModal } from './CompanyModal';
+import { Icon } from './Icon';
 import { Panel } from './Panel';
 import { PrototypeControls } from './PrototypeControls';
 import { Rail } from './Rail';
@@ -25,9 +26,10 @@ export function Shell() {
   const docked = prefs.panelDocked;
   const peekSection = peekId ? findSection(peekId) : undefined;
 
+  // Upgradable (Missing) sections have no panel, so they never peek; hovering one closes any open peek.
   const openPeek = useCallback((id: string) => {
     window.clearTimeout(peekTimer.current);
-    setPeekId(id);
+    setPeekId(findSection(id)?.missing ? null : id);
   }, []);
   const closePeekSoon = useCallback(() => {
     window.clearTimeout(peekTimer.current);
@@ -66,11 +68,12 @@ export function Shell() {
         <div className="sidebar" onMouseEnter={holdPeek} onMouseLeave={docked ? undefined : closePeekSoon}>
           <Rail
             activeId={activeSection?.id}
+            docked={docked}
             onHoverSection={docked ? undefined : openPeek}
             onClickSection={docked ? undefined : openPeek}
             onOpenCompany={() => setCompanyOpen(true)}
           />
-          {docked && activeSection && <Panel section={activeSection} mode="docked" />}
+          {docked && activeSection && !activeSection.missing && <Panel section={activeSection} mode="docked" />}
           {!docked && peekSection && <Panel section={peekSection} mode="peek" onClose={() => setPeekId(null)} />}
         </div>
       )}
@@ -87,9 +90,25 @@ export function Shell() {
       {phone && mobileOpen && (
         <div className="mobile-drawer" role="dialog" aria-modal="true" aria-label="Navigation">
           <div className="mobile-drawer-backdrop" onClick={() => setMobileOpen(false)} />
-          <div className="mobile-drawer-body">
-            <Rail activeId={activeSection?.id} phone onOpenCompany={() => setCompanyOpen(true)} />
-            {activeSection && <Panel section={activeSection} mode="phone" onClose={() => setMobileOpen(false)} onNavigate={() => setMobileOpen(false)} />}
+          <div className={`mobile-drawer-body ${activeSection?.missing ? 'mobile-drawer-body--rail-only' : ''}`}>
+            <Rail
+              activeId={activeSection?.id}
+              phone
+              onClickSection={(id) => {
+                // Nothing more to choose in an upgradable section: go straight to its upgrade page.
+                if (findSection(id)?.missing) setMobileOpen(false);
+              }}
+              onOpenCompany={() => setCompanyOpen(true)}
+            />
+            {activeSection && !activeSection.missing ? (
+              <Panel section={activeSection} mode="phone" onClose={() => setMobileOpen(false)} onNavigate={() => setMobileOpen(false)} />
+            ) : (
+              <div className="mobile-drawer-close">
+                <button type="button" className="icon-btn" aria-label="Close navigation" onClick={() => setMobileOpen(false)}>
+                  <Icon name="close" />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

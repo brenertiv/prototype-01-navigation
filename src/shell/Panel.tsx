@@ -15,7 +15,7 @@ interface Props {
   onNavigate?: () => void;
 }
 
-/** The context panel, one template for every section (SYS-NAVPAT-10 to 13). */
+/** The context panel, one template for every section (SYS-NAVPAT-10 to 13). Upgradable (Missing) sections have none. */
 export function Panel({ section, mode, onClose, onNavigate }: Props) {
   const { prefs, set } = usePrefs();
   const scoped = useScopedPath();
@@ -134,13 +134,11 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
           ) : (
             <h2>
               {section.label}
-              {section.missing && <span className="chip chip--missing">Missing</span>}
             </h2>
           )}
         </div>
         <div className="panel-actions">
-          {!section.missing &&
-            !noAccess &&
+          {!noAccess &&
             section.headerActions.map((a) => {
               const n = badgeFor(a.badge);
               return (
@@ -169,18 +167,6 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
           <Icon name="lock" />
           <p>You don't have access to {section.label}.</p>
           <p className="muted">Ask an Admin of this Company for access. ST-N03, ST-E06.</p>
-        </div>
-      ) : section.missing ? (
-        <div className="panel-message">
-          <p>{section.label} is not part of your account.</p>
-          <ul className="rows">
-            <li className="row-wrap">
-              <NavLink to={scoped(section.path)} end className="row" onClick={onNavigate}>
-                <Icon name="info" />
-                <span className="row-label">About {section.label}</span>
-              </NavLink>
-            </li>
-          </ul>
         </div>
       ) : (
         <>

@@ -1,3 +1,4 @@
+import { useState, type FocusEvent, type MouseEvent } from 'react';
 import { NavLink } from 'react-router-dom';
 import { RAIL_FIXED, RAIL_SECTIONS } from '../nav/sections';
 import type { SectionDef } from '../nav/types';
@@ -10,16 +11,29 @@ interface Props {
   activeId?: string;
   /** Phone variant inside the drawer: labels shown, no tooltips (SYS-NAVPAT-30). */
   phone?: boolean;
+  /** Panel docked: every item gets a tooltip. Collapsed: only items with no panel, since the peek names the rest. */
+  docked?: boolean;
   onHoverSection?: (id: string) => void;
   onClickSection?: (id: string) => void;
   onOpenCompany: () => void;
 }
 
 /** The icon rail (SYS-NAVPAT-01 to 09). */
-export function Rail({ activeId, phone, onHoverSection, onClickSection, onOpenCompany }: Props) {
+export function Rail({ activeId, phone, docked, onHoverSection, onClickSection, onOpenCompany }: Props) {
   const { prefs } = usePrefs();
   const scoped = useScopedPath();
   const company = COMPANIES.find((c) => c.id === prefs.companyId) ?? COMPANIES[0];
+
+  // The tooltip shows the item's name. It is fixed-positioned so the rail's
+  // scrolling list can't clip it, and aria-hidden because the aria-label is
+  // the accessible name (SYS-NAVPAT-31: a tooltip is not the label).
+  const [tip, setTip] = useState<{ label: string; top: number; left: number } | null>(null);
+  const showTip = (e: MouseEvent<HTMLElement> | FocusEvent<HTMLElement>, label: string, enabled: boolean) => {
+    if (!enabled || phone) return setTip(null);
+    const r = e.currentTarget.getBoundingClientRect();
+    setTip({ label, top: r.top + r.height / 2, left: r.right + 10 });
+  };
+  const hideTip = () => setTip(null);
 
   const renderItem = (section: SectionDef) => {
     const active = section.id === activeId;
@@ -31,6 +45,8 @@ export function Rail({ activeId, phone, onHoverSection, onClickSection, onOpenCo
     if (unread > 0) labelParts.push(`${unread} unread`);
     const label = labelParts.join(', ');
     const isAccount = section.id === 'account';
+    // Upgradable (Missing) sections have no panel, so they always get the tooltip.
+    const tipOn = Boolean(docked) || Boolean(section.missing);
 
     return (
       <li key={section.id}>
@@ -45,10 +61,17 @@ export function Rail({ activeId, phone, onHoverSection, onClickSection, onOpenCo
           ].join(' ')}
           aria-label={label}
           aria-current={active ? 'page' : undefined}
-          title={phone ? undefined : label}
-          onMouseEnter={onHoverSection ? () => onHoverSection(section.id) : undefined}
-          onFocus={onHoverSection ? () => onHoverSection(section.id) : undefined}
-          onClick={onClickSection ? () => onClickSection(section.id) : undefined}
+          onMouseEnter={(e) => {
+            showTip(e, section.label, tipOn);
+            onHoverSection?.(section.id);
+          }}
+          onFocus={(e) => {
+            showTip(e, section.label, tipOn);
+            onHoverSection?.(section.id);
+          }}
+          onMouseLeave={hideTip}
+          onBlur={hideTip}
+          onClick={() => onClickSection?.(section.id)}
         >
           {isAccount ? (
             <span className="avatar" aria-hidden="true">
@@ -77,16 +100,29 @@ export function Rail({ activeId, phone, onHoverSection, onClickSection, onOpenCo
         className="rail-item rail-item--company"
         aria-label={`Company: ${company.name}. Switch company`}
         aria-haspopup="dialog"
-        title={phone ? undefined : company.name}
-        onClick={onOpenCompany}
+        onMouseEnter={(e) => showTip(e, company.name, true)}
+        onFocus={(e) => showTip(e, company.name, true)}
+        onMouseLeave={hideTip}
+        onBlur={hideTip}
+        onClick={() => {
+          hideTip();
+          onOpenCompany();
+        }}
       >
         <span className="company-mark" aria-hidden="true">
           {company.initials}
         </span>
         {phone && <span className="rail-label">{company.name}</span>}
       </button>
-      <ul className="rail-scroll">{RAIL_SECTIONS.map(renderItem)}</ul>
+      <ul className="rail-scroll" onScroll={hideTip}>
+        {RAIL_SECTIONS.map(renderItem)}
+      </ul>
       <ul className="rail-fixed">{RAIL_FIXED.map(renderItem)}</ul>
+      {tip && (
+        <div className="rail-tooltip" aria-hidden="true" style={{ top: tip.top, left: tip.left }}>
+          {tip.label}
+        </div>
+      )}
     </nav>
   );
 }
