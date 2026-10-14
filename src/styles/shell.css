@@ -917,6 +917,41 @@ code {
   margin-top: auto;
 }
 
+/* Filters over an item's records (People). Selected is marked by a check, not colour alone. */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+.filter-chip:hover {
+  background: var(--state-hovered);
+}
+.filter-chip:active {
+  background: var(--state-pressed);
+}
+.filter-chip[aria-current='true'] {
+  background: var(--nav-selected-bg);
+  color: var(--nav-on-selected);
+  border-color: transparent;
+  padding-left: 8px;
+}
+.filter-chip .msym {
+  font-size: 18px;
+}
+
 /* ---------- Prototype controls ---------- */
 .proto {
   position: fixed;

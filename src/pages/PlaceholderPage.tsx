@@ -1,5 +1,5 @@
-import { useLocation } from 'react-router-dom';
-import type { GroupDef, PageDef, SectionDef } from '../nav/types';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
+import type { FilterDef, GroupDef, PageDef, SectionDef } from '../nav/types';
 import { usePrefs } from '../state/preferences';
 import { useScope } from '../state/scope';
 import { Icon } from '../shell/Icon';
@@ -24,8 +24,12 @@ export function PlaceholderPage({ section, group, page }: Props) {
   const { prefs } = usePrefs();
   const { scope, inUrl } = useScope();
   const { pathname, search } = useLocation();
+  const activeFilter = useActiveFilter(page);
 
   if (prefs.noAccessSection === section.id) return <NoAccessPage section={section} />;
+
+  const requirements = activeFilter?.requirements ?? page.requirements;
+  const replaces = activeFilter?.replaces ?? page.replaces;
 
   const needsProperty = page.scope === 'property' && scope.level !== 'property';
   const needsPortfolio = page.scope === 'portfolio' && scope.level !== 'portfolio';
@@ -37,6 +41,8 @@ export function PlaceholderPage({ section, group, page }: Props) {
         {group.label ? ` › ${group.label}` : ''}
       </p>
       <h1>{page.label}</h1>
+
+      {page.filters && activeFilter && <FilterBar page={page} active={activeFilter} />}
 
       {needsProperty && <ScopeNotice needed="property" page={page} />}
       {needsPortfolio && <ScopeNotice needed="portfolio" page={page} />}
@@ -57,6 +63,12 @@ export function PlaceholderPage({ section, group, page }: Props) {
           </code>
           {!inUrl && page.scope !== 'none' && <span className="muted"> (no scope in the URL, so the default applies)</span>}
         </dd>
+        {activeFilter && (
+          <>
+            <dt>Showing</dt>
+            <dd>{activeFilter.label}</dd>
+          </>
+        )}
         <dt>Works at</dt>
         <dd>{SCOPE_WORDS[page.scope]}</dd>
         {page.scope !== 'none' && (
@@ -68,16 +80,16 @@ export function PlaceholderPage({ section, group, page }: Props) {
             </dd>
           </>
         )}
-        {page.requirements && (
+        {requirements && (
           <>
             <dt>Requirements</dt>
-            <dd>{page.requirements}</dd>
+            <dd>{requirements}</dd>
           </>
         )}
-        {page.replaces && (
+        {replaces && (
           <>
             <dt>Replaces today</dt>
-            <dd>{page.replaces}</dd>
+            <dd>{replaces}</dd>
           </>
         )}
         <dt>Source spec</dt>
@@ -106,5 +118,40 @@ function ScopeNotice({ needed, page }: { needed: 'property' | 'portfolio'; page:
         </button>
       </div>
     </div>
+  );
+}
+
+/** The filter named in `?filter=`, or the page's first filter. Undefined when the page has none. */
+export function useActiveFilter(page?: PageDef): FilterDef | undefined {
+  const [params] = useSearchParams();
+  if (!page?.filters?.length) return undefined;
+  const id = params.get('filter');
+  return page.filters.find((f) => f.id === id) ?? page.filters[0];
+}
+
+/**
+ * Filters over the item's records, replacing the panel's sub-pages. Links, so
+ * each filter is a deep link and the back button steps through them; the
+ * scope and any other query parameters ride along.
+ */
+function FilterBar({ page, active }: { page: PageDef; active: FilterDef }) {
+  const [params] = useSearchParams();
+  const searchFor = (id: string) => {
+    const next = new URLSearchParams(params);
+    next.set('filter', id);
+    return `?${next.toString()}`;
+  };
+  return (
+    <nav className="filters" aria-label={`Filter ${page.label}`}>
+      {page.filters!.map((f) => {
+        const current = f.id === active.id;
+        return (
+          <Link key={f.id} to={{ search: searchFor(f.id) }} className="filter-chip" aria-current={current ? 'true' : undefined}>
+            {current && <Icon name="check" />}
+            {f.label}
+          </Link>
+        );
+      })}
+    </nav>
   );
 }

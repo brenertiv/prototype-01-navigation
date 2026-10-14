@@ -1,9 +1,27 @@
 /** The scope a page works at (SYS-SCOPE-12, panel template "Pages per group"). */
 export type PageScope = 'portfolio' | 'property' | 'both' | 'any' | 'none';
 
+/**
+ * A filter over the records on one page. Used where a panel item stands for
+ * several record sets instead of a collapsible group of pages (People).
+ * Kept in the URL as `?filter=<id>`.
+ */
+export interface FilterDef {
+  id: string;
+  label: string;
+  requirements?: string;
+  replaces?: string;
+  /** The route this filter replaced; redirects here so old deep links still land. */
+  legacyPath?: string;
+}
+
 export interface PageDef {
   id: string;
   label: string;
+  /** Filters over this page's records. The first is the default. */
+  filters?: FilterDef[];
+  /** The route this page replaced; redirects here. */
+  legacyPath?: string;
   /** Route path. Absent for rows that are not pages in the MVP (for example the tenant view switch). */
   path?: string;
   scope: PageScope;

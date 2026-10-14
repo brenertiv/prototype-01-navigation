@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navForPath } from '../nav/sections';
+import { useActiveFilter } from '../pages/PlaceholderPage';
 import { Icon } from './Icon';
 
 interface Props {
@@ -12,7 +13,9 @@ interface Props {
 export function AssistantDrawer({ phone, onClose }: Props) {
   const { pathname } = useLocation();
   const nav = navForPath(pathname);
-  const boundTo = nav?.page?.label ?? nav?.section.label ?? 'this page';
+  const filter = useActiveFilter(nav?.page);
+  const pageLabel = nav?.page?.label ?? nav?.section.label ?? 'this page';
+  const boundTo = filter ? `${pageLabel} · ${filter.label}` : pageLabel;
   const isArtefact = Boolean(nav?.page?.detail);
   const [expanded, setExpanded] = useState(false);
 

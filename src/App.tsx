@@ -6,6 +6,15 @@ import { UpgradePage } from './pages/UpgradePage';
 import { Shell } from './shell/Shell';
 import { PrefsProvider } from './state/preferences';
 
+/** An old route lands on its new item, with its filter set and the scope kept. */
+function LegacyRedirect({ to, filter }: { to: string; filter?: string }) {
+  const { search } = useLocation();
+  const params = new URLSearchParams(search);
+  if (filter) params.set('filter', filter);
+  const qs = params.toString();
+  return <Navigate to={`${to}${qs ? `?${qs}` : ''}`} replace />;
+}
+
 /** `/` lands on Workspace › Home and keeps any scope already in the URL. */
 function RedirectHome() {
   const { search } = useLocation();
@@ -25,9 +34,17 @@ export default function App() {
                 : section.groups.flatMap((group) =>
                     group.pages
                       .filter((page) => page.path)
-                      .map((page) => (
-                        <Route key={page.path} path={page.path} element={<PlaceholderPage section={section} group={group} page={page} />} />
-                      )),
+                      .flatMap((page) => [
+                        <Route key={page.path} path={page.path} element={<PlaceholderPage section={section} group={group} page={page} />} />,
+                        ...(page.legacyPath
+                          ? [<Route key={page.legacyPath} path={page.legacyPath} element={<LegacyRedirect to={page.path!} />} />]
+                          : []),
+                        ...(page.filters ?? [])
+                          .filter((f) => f.legacyPath)
+                          .map((f) => (
+                            <Route key={f.legacyPath} path={f.legacyPath} element={<LegacyRedirect to={page.path!} filter={f.id} />} />
+                          )),
+                      ]),
                   ),
             )}
             <Route path="*" element={<NotFoundPage />} />

@@ -28,6 +28,10 @@ Open http://localhost:5173. `npm run build` type-checks and bundles.
 - **Change scope** from the pill in the top bar. The scope rides in the URL as
   `?scope=` and follows you between sections. Open a record page such as
   Building Info › Details at portfolio scope to see the "pick a property" fix.
+- **Open People.** Its panel is a flat list with no collapsible groups. Team,
+  Tenants and Partners each open one page, and what used to be their sub-pages
+  are filter chips over that page's records. The filter rides in the URL, so it
+  deep-links and the back button steps through it.
 - **Open the Company button** (top of the rail) to switch between fake companies.
 - **Shrink the window** to 375 px wide: the rail and panel become one drawer from
   the menu button. Shrink the height: the section items scroll while the Company
@@ -46,7 +50,7 @@ or `?scope=123-main-st`; with no scope the default (portfolio) applies.
 |---|---|
 | Workspace | `/workspace/home`, `/workspace/dashboards`, `/workspace/dashboards/exposure-by-asset`, `/workspace/reports`, `/workspace/reports/gresb-2026`, `/workspace/plans`, `/workspace/plans/net-zero-2030`, `/workspace/projects`, `/workspace/gallery` |
 | Building Info | `/building-info/overview`; `/building-info/data-health/inbox`, `/sources`; `/building-info/utilities/coverage`, `/accounts`, `/bills`, `/energy-star`; `/building-info/record/details`, `/stacking-plan`, `/occupancy-hours`, `/policies`, `/accolades`, `/files`; `/building-info/equipment/equipment`, `/meters`, `/meter-health`, `/power-capacity`, `/one-line-diagram`, `/groups`, `/alerts` |
-| People | `/people/team/members`, `/teams`; `/people/tenants/tenants`, `/requests`; `/people/partners/contractors`, `/vendors`, `/management-companies`; `/people/contacts/whos-who`; `/people/agents/chase-agent` |
+| People | `/people/team` (filters: `members`, `teams`), `/people/tenants` (`tenants`, `requests`), `/people/partners` (`contractors`, `vendors`, `management-companies`), `/people/contacts`, `/people/agents`. The filter is `?filter=`; the old sub-page routes redirect to their item and filter |
 | Tenant Billing | `/tenant-billing` (upgrade page) |
 | Maintenance | `/maintenance` (upgrade page) |
 | Notifications | `/notifications/insights`, `/activity`, `/alerts`, `/app-updates` |
@@ -74,6 +78,7 @@ Change the navigation by editing the data, not the components.
 | SYS-NAVPAT-11 docked state persists | `preferences.tsx` | localStorage stands in for personalization; the drawer state persists the same way (SYS-AI-11) |
 | SYS-NAVPAT-12 peek while collapsed | `Shell.tsx`, `Panel.tsx` | Hover, click or focus a rail item; no layout shift |
 | SYS-NAVPAT-13 panel per section from its spec | `sections.ts` | One entry per section |
+| People panel, flat with filters | `sections.ts`, `PlaceholderPage.tsx` | **Differs from the spec.** People's panel has no collapsible groups; each item's former sub-pages are filters over its records. SYS-NAVPAT-10 and the People spec's Panel and pages both describe collapsible groups, so adopting this needs a decision-log entry and a spec change |
 | SYS-NAVPAT-20 top bar controls | `TopBar.tsx` | Scope indicator where scope applies, share, more, assistant toggle |
 | SYS-NAVPAT-21 no canvas chrome | `PlaceholderPage.tsx` | The page owns its title |
 | SYS-NAVPAT-22 assistant toggle and drawer | `AssistantDrawer.tsx` | Bound to the page or the open artefact; a bottom sheet on phones |

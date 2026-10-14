@@ -107,7 +107,7 @@ Scope rides along as `?scope=portfolio` or `?scope=<property>`.
 |---|---|
 | Workspace | `/workspace/home` (default), `/workspace/dashboards`, `/workspace/dashboards/:id`, `/workspace/reports`, `/workspace/reports/:id`, `/workspace/plans`, `/workspace/plans/:id`, `/workspace/projects`, `/workspace/gallery` |
 | Building Info | `/building-info/overview`; `/building-info/data-health/inbox`, `/sources`; `/building-info/utilities/coverage`, `/accounts`, `/bills`, `/energy-star`; `/building-info/record/details`, `/stacking-plan`, `/occupancy-hours`, `/policies`, `/accolades`, `/files`; `/building-info/equipment/equipment`, `/meters`, `/meter-health`, `/power-capacity`, `/one-line-diagram`, `/groups`, `/alerts` |
-| People | `/people/team/members`, `/teams`; `/people/tenants/tenants`, `/requests`; `/people/partners/contractors`, `/vendors`, `/management-companies`; `/people/contacts/whos-who`; `/people/agents/chase-agent` |
+| People | `/people/team` (filters: `members`, `teams`), `/people/tenants` (`tenants`, `requests`), `/people/partners` (`contractors`, `vendors`, `management-companies`), `/people/contacts`, `/people/agents`. The filter is `?filter=`; the old sub-page routes redirect to their item and filter |
 | Tenant Billing | `/tenant-billing` (upgrade page) |
 | Maintenance | `/maintenance` (upgrade page) |
 | Notifications | `/notifications/insights`, `/activity`, `/alerts`, `/app-updates` |
@@ -116,6 +116,15 @@ Scope rides along as `?scope=portfolio` or `?scope=<property>`.
 
 `/` redirects to `/workspace/home`. Every rail click and every panel row changes
 the URL, so deep links and the back button keep the section (SYS-NAVPAT-02, ST-N13).
+
+## Changes after review
+
+- **People panel flattened (2026-10-14).** The People panel has no collapsible
+  groups. Each top-level item (Team, Tenants, Partners, Building contacts,
+  Agents) is one row and one page, and its former sub-pages are filters over that
+  page's records, kept in the URL as `?filter=`. Old sub-page routes redirect.
+  This differs from SYS-NAVPAT-10 and the People spec's Panel and pages, which
+  both describe collapsible groups.
 
 ## Stack
 
