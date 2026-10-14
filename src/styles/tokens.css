@@ -1,0 +1,138 @@
+/*
+ * Semantic tokens named by job, never by hue (CMP-COLOR-03), with modes in the
+ * semantic layer (CMP-COLOR-02). Values are placeholders for the prototype;
+ * the real token set is the colors spec.
+ */
+:root {
+  --font-sans: Roboto, system-ui, sans-serif;
+  --font-mono: 'Roboto Mono', ui-monospace, monospace;
+
+  --surface-page: #ffffff;
+  --surface-rail: #f3f4f6;
+  --surface-panel: #f8f9fa;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eceef1;
+
+  --text-primary: #16181d;
+  --text-secondary: #4b5160;
+  --text-tertiary: #6b7280;
+  --text-disabled: #9aa0ab;
+
+  --border-subtle: #e2e5ea;
+  --border-strong: #c6cbd3;
+
+  --accent: #1f5eff;
+  --on-accent: #ffffff;
+
+  --nav-selected-bg: #dfe8ff;
+  --nav-on-selected: #0b3bbf;
+  --nav-missing-border: #aeb6c4;
+
+  --state-hovered: rgba(16, 24, 40, 0.08);
+  --state-pressed: rgba(16, 24, 40, 0.12);
+  --focus-ring: #1f5eff;
+
+  --status-info-container: #e3f0ff;
+  --on-status-info-container: #0b3bbf;
+  --status-warning-container: #fff1d6;
+  --on-status-warning-container: #7a4d00;
+
+  --scope-portfolio-bg: #e8f1ff;
+  --scope-on-portfolio: #0b3bbf;
+  --scope-property-bg: #e6f6ee;
+  --scope-on-property: #0b6b3a;
+
+  --shadow-raised: 0 8px 24px rgba(16, 24, 40, 0.16), 0 1px 2px rgba(16, 24, 40, 0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --rail-width: 52px;
+  --panel-width: 288px;
+  --topbar-height: 52px;
+  --drawer-width: 360px;
+
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --surface-page: #121418;
+    --surface-rail: #0c0e12;
+    --surface-panel: #171a20;
+    --surface-raised: #1f232b;
+    --surface-sunken: #0f1115;
+
+    --text-primary: #eef0f4;
+    --text-secondary: #b6bcc8;
+    --text-tertiary: #8e95a3;
+    --text-disabled: #5f6675;
+
+    --border-subtle: #262b34;
+    --border-strong: #3a414d;
+
+    --accent: #7aa2ff;
+    --on-accent: #0b1a44;
+
+    --nav-selected-bg: #223464;
+    --nav-on-selected: #c9d8ff;
+    --nav-missing-border: #4a5363;
+
+    --state-hovered: rgba(255, 255, 255, 0.08);
+    --state-pressed: rgba(255, 255, 255, 0.12);
+    --focus-ring: #9bb8ff;
+
+    --status-info-container: #1c2b52;
+    --on-status-info-container: #c9d8ff;
+    --status-warning-container: #4a3410;
+    --on-status-warning-container: #ffd68a;
+
+    --scope-portfolio-bg: #1c2b52;
+    --scope-on-portfolio: #c9d8ff;
+    --scope-property-bg: #143a28;
+    --scope-on-property: #b7ecd0;
+
+    --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --surface-page: #121418;
+  --surface-rail: #0c0e12;
+  --surface-panel: #171a20;
+  --surface-raised: #1f232b;
+  --surface-sunken: #0f1115;
+
+  --text-primary: #eef0f4;
+  --text-secondary: #b6bcc8;
+  --text-tertiary: #8e95a3;
+  --text-disabled: #5f6675;
+
+  --border-subtle: #262b34;
+  --border-strong: #3a414d;
+
+  --accent: #7aa2ff;
+  --on-accent: #0b1a44;
+
+  --nav-selected-bg: #223464;
+  --nav-on-selected: #c9d8ff;
+  --nav-missing-border: #4a5363;
+
+  --state-hovered: rgba(255, 255, 255, 0.08);
+  --state-pressed: rgba(255, 255, 255, 0.12);
+  --focus-ring: #9bb8ff;
+
+  --status-info-container: #1c2b52;
+  --on-status-info-container: #c9d8ff;
+  --status-warning-container: #4a3410;
+  --on-status-warning-container: #ffd68a;
+
+  --scope-portfolio-bg: #1c2b52;
+  --scope-on-portfolio: #c9d8ff;
+  --scope-property-bg: #143a28;
+  --scope-on-property: #b7ecd0;
+
+  --shadow-raised: 0 8px 24px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+  color-scheme: dark;
+}
