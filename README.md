@@ -15,6 +15,28 @@ npm run dev
 
 Open http://localhost:5173. `npm run build` type-checks and bundles.
 
+## Deploying to GitHub Pages
+
+`.github/workflows/pages.yml` builds the site and deploys it to GitHub Pages on
+every push to `main`, once Pages is enabled with GitHub Actions as its source.
+It builds under the `/<repo>/` subpath and serves the app as `404.html`, so
+deep links work.
+
+A Pages site on a personal GitHub account is public to anyone with the URL,
+even when the repo is private.
+
+To check the deployed build locally:
+
+```bash
+BASE_PATH=/prototype-01-navigation/ npm run build && cp dist/index.html dist/404.html
+```
+
+```bash
+npm run preview:pages
+```
+
+Then open http://localhost:4174/prototype-01-navigation/.
+
 ## What to try
 
 - **Click every rail item.** Workspace, Building Info and People each swap the

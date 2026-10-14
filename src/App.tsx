@@ -30,9 +30,12 @@ function WorkspaceLanding() {
   return <Navigate to={`/workspace/${landing.id}${search}`} replace state={{ landedBecause }} />;
 }
 
+/** The subpath the app is served under, from Vite's base ('/' locally, '/<repo>/' on GitHub Pages). */
+const BASENAME = import.meta.env.BASE_URL === '/' ? undefined : import.meta.env.BASE_URL.replace(/\/$/, '');
+
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={BASENAME}>
       <PrefsProvider>
         <Routes>
           <Route element={<Shell />}>

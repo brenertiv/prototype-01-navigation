@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "preview:pages": "BASE_PATH=/prototype-01-navigation/ vite preview --port 4174 --strictPort"
   },
   "dependencies": {
     "react": "^18.3.1",
