@@ -12,120 +12,20 @@ export const SECTIONS: SectionDef[] = [
     label: 'Workspace',
     icon: 'space_dashboard',
     path: '/workspace',
-    defaultPath: '/workspace/home',
+    // The app's home. Lands on the last workspace the user had open, or the
+    // role's default for a new user (see workspaces.ts).
+    defaultPath: '/workspace',
     source: '02-building/modules/workspace.md § Panel and pages',
     headerActions: [
-      { id: 'search', label: 'Search artefacts', icon: 'search' },
-      { id: 'filter', label: 'Filter by job, persona, received, ready-made', icon: 'filter_list' },
+      { id: 'search', label: 'Search workspaces', icon: 'search' },
+      { id: 'filter', label: 'Filter workspaces', icon: 'filter_list' },
     ],
     primaryAction: { label: 'New', icon: 'add' },
-    groups: [
-      {
-        id: 'home',
-        label: 'Home',
-        pages: [
-          {
-            id: 'home',
-            label: 'Home',
-            path: '/workspace/home',
-            scope: 'both',
-            requirements: 'MOD-WS-01 to 03, 40',
-            replaces: 'Portfolio and property Summary; Energy & ESG › Summary; Insights',
-          },
-        ],
-      },
-      {
-        id: 'dashboards',
-        label: 'Dashboards',
-        pages: [
-          {
-            id: 'dashboards',
-            label: 'Dashboards',
-            path: '/workspace/dashboards',
-            scope: 'both',
-            requirements: 'MOD-WS-45, 46, 48',
-            replaces: 'Energy & ESG › Summary, Energy Use, Emissions; ENERGY STAR › Summary; Dashboards; Insights; Alerts › Summary charts',
-          },
-          {
-            id: 'dashboard',
-            label: 'Dashboard (one artefact)',
-            path: '/workspace/dashboards/exposure-by-asset',
-            scope: 'any',
-            detail: true,
-            requirements: 'MOD-WS-10, 12 to 17, 30, 42, 44, 47, 51',
-            replaces: 'The tabs and widgets of the pages above',
-          },
-        ],
-      },
-      {
-        id: 'reports',
-        label: 'Reports',
-        pages: [
-          {
-            id: 'reports',
-            label: 'Reports',
-            path: '/workspace/reports',
-            scope: 'both',
-            requirements: 'MOD-WS-04, 11, 45, 46, 48, 53',
-            replaces: 'Reports, Report settings; Energy & ESG export menu; Energy data table',
-          },
-          {
-            id: 'report',
-            label: 'Report (one artefact)',
-            path: '/workspace/reports/gresb-2026',
-            scope: 'any',
-            detail: true,
-            requirements: 'MOD-WS-11, 44, 47',
-            replaces: 'Generated reports',
-          },
-        ],
-      },
-      {
-        id: 'plans',
-        label: 'Plans',
-        pages: [
-          {
-            id: 'plans',
-            label: 'Plans',
-            path: '/workspace/plans',
-            scope: 'portfolio',
-            requirements: 'MOD-WS-20, 21, 23, 45',
-            replaces: 'Carbon Planning › Summary, Plans',
-          },
-          {
-            id: 'plan',
-            label: 'Plan (one artefact)',
-            path: '/workspace/plans/net-zero-2030',
-            scope: 'any',
-            detail: true,
-            requirements: 'MOD-WS-20 to 24, 47',
-            replaces: 'Carbon Planning › Plan detail, Create Plan',
-          },
-          {
-            id: 'projects',
-            label: 'Projects',
-            path: '/workspace/projects',
-            scope: 'both',
-            requirements: 'MOD-WS-20, 22, 24',
-            replaces: 'Carbon Planning › Projects',
-          },
-        ],
-      },
-      {
-        id: 'gallery',
-        label: 'Gallery',
-        pages: [
-          {
-            id: 'gallery',
-            label: 'Gallery',
-            path: '/workspace/gallery',
-            scope: 'any',
-            requirements: 'MOD-WS-40, 41, 52',
-            replaces: 'New',
-          },
-        ],
-      },
-    ],
+    // No groups: the panel lists workspaces. Dashboards, Reports, Plans
+    // (with Projects) and Gallery are gone; a workspace is one canvas that
+    // can cover any of them (decided in prototype 01).
+    dynamicList: 'workspaces',
+    groups: [],
   },
   {
     id: 'building-info',

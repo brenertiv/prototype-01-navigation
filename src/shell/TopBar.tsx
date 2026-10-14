@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navForPath } from '../nav/sections';
+import { findWorkspace, workspaceIdForPath } from '../nav/workspaces';
 import { COMPANIES, SCOPES } from '../nav/scopes';
 import { usePrefs } from '../state/preferences';
 import { useScope } from '../state/scope';
@@ -16,7 +17,8 @@ export function TopBar({ phone, onOpenMenu }: Props) {
   const { prefs, set } = usePrefs();
   const { pathname } = useLocation();
   const nav = navForPath(pathname);
-  const scopeApplies = Boolean(nav?.page && nav.page.scope !== 'none') && !nav?.section.missing;
+  const onWorkspace = Boolean(findWorkspace(workspaceIdForPath(pathname)));
+  const scopeApplies = onWorkspace || (Boolean(nav?.page && nav.page.scope !== 'none') && !nav?.section.missing);
 
   return (
     <div className="topbar">

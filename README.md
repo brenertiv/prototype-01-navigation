@@ -20,6 +20,12 @@ Open http://localhost:5173. `npm run build` type-checks and bundles.
 - **Click every rail item.** Workspace, Building Info and People each swap the
   panel and the URL. Tenant Billing and Maintenance are marked Missing and open
   an upgrade page.
+- **Start at Workspace, the app's home.** Its panel lists workspaces, and each
+  one is a canvas that can be a dashboard, a report or a plan. Open one, leave
+  for another section, then click Workspace on the rail: you land back on it.
+  In the prototype controls, tick "New user" and pick a role to see a new user
+  land on that role's default workspace, the only one they have. Each workspace
+  page says how you got there.
 - **Collapse the panel** (the toggle in the panel header), then hover or click a
   rail item: the panel peeks over the canvas without moving it. Click the canvas
   or press Escape to dismiss. The docked state survives a reload.
@@ -43,12 +49,12 @@ Open http://localhost:5173. `npm run build` type-checks and bundles.
 
 ## Routes
 
-`/` redirects to `/workspace/home`. Scope is `?scope=portfolio`, `?scope=west-region`
+`/` redirects to `/workspace`, the app's home. Scope is `?scope=portfolio`, `?scope=west-region`
 or `?scope=123-main-st`; with no scope the default (portfolio) applies.
 
 | Rail item | Routes |
 |---|---|
-| Workspace | `/workspace/home`, `/workspace/dashboards`, `/workspace/dashboards/exposure-by-asset`, `/workspace/reports`, `/workspace/reports/gresb-2026`, `/workspace/plans`, `/workspace/plans/net-zero-2030`, `/workspace/projects`, `/workspace/gallery` |
+| Workspace | `/workspace` lands on the last workspace opened, or the role's default for a new user. Each workspace is `/workspace/:id`: `reporting-readiness`, `exposure-by-asset`, `data-problems`, `attention-today` (one ready-made default per role), and `gresb-2026`, `q3-board-pack`, `net-zero-2030`, `west-region-exposure` (a returning user's own). The old Home, Dashboards, Reports, Plans, Projects and Gallery routes redirect |
 | Building Info | `/building-info/overview`; `/building-info/data-health/inbox`, `/sources`; `/building-info/utilities/coverage`, `/accounts`, `/bills`, `/energy-star`; `/building-info/record/details`, `/stacking-plan`, `/occupancy-hours`, `/policies`, `/accolades`, `/files`; `/building-info/equipment/equipment`, `/meters`, `/meter-health`, `/power-capacity`, `/one-line-diagram`, `/groups`, `/alerts` |
 | People | `/people/team` (filters: `members`, `teams`), `/people/tenants` (`tenants`, `requests`), `/people/partners` (`contractors`, `vendors`, `management-companies`), `/people/contacts`, `/people/agents`. The filter is `?filter=`; the old sub-page routes redirect to their item and filter |
 | Tenant Billing | `/tenant-billing` (upgrade page) |
@@ -78,6 +84,7 @@ Change the navigation by editing the data, not the components.
 | SYS-NAVPAT-11 docked state persists | `preferences.tsx` | localStorage stands in for personalization; the drawer state persists the same way (SYS-AI-11) |
 | SYS-NAVPAT-12 peek while collapsed | `Shell.tsx`, `Panel.tsx` | Hover, click or focus a rail item; no layout shift |
 | SYS-NAVPAT-13 panel per section from its spec | `sections.ts` | One entry per section |
+| Workspace as a list of workspaces | `workspaces.ts`, `WorkspaceList.tsx`, `WorkspacePage.tsx` | **Differs from the spec.** Workspace is the app's home. Its panel is one flat list of workspaces, with no Home, Dashboards, Reports, Plans or Gallery groups; a workspace is one canvas that can hold a dashboard, a report or a plan. The rail item lands on the last workspace opened, or on the role's default for a new user. The spec has a library per artefact type (MOD-WS-45, 46) and a Home group |
 | People panel, flat with filters | `sections.ts`, `PlaceholderPage.tsx` | **Differs from the spec.** People's panel has no collapsible groups; each item's former sub-pages are filters over its records. SYS-NAVPAT-10 and the People spec's Panel and pages both describe collapsible groups, so adopting this needs a decision-log entry and a spec change |
 | SYS-NAVPAT-20 top bar controls | `TopBar.tsx` | Scope indicator where scope applies, share, more, assistant toggle |
 | SYS-NAVPAT-21 no canvas chrome | `PlaceholderPage.tsx` | The page owns its title |
@@ -99,7 +106,7 @@ Change the navigation by editing the data, not the components.
 | ST-N04 Company modal, one or many, with a guest | Company button; toggle "Member of several companies" |
 | ST-N05 account panel for an Admin and a non-admin | Account item; toggle "Admin user" |
 | ST-N06 docked, collapsed, collapsed with a peek | Panel toggle, then hover the rail |
-| ST-N07 panel loading; empty group | "Panel loading delay"; "Empty group" (Workspace › Plans) |
+| ST-N07 panel loading; empty group | "Panel loading delay"; "Empty group" (Building Info › Data health) |
 | ST-N08 short viewport | Window height under about 480 px |
 | ST-N09 phone width, drawer closed and open | 375 px wide; the menu button |
 | ST-N10 canvas where scope doesn't apply | Any Account page |

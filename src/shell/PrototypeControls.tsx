@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { usePrefs } from '../state/preferences';
+import { PERSONAS } from '../nav/workspaces';
+import { usePrefs, type Persona } from '../state/preferences';
 import { Icon } from './Icon';
 
 /** A test harness for the shell states in prototype-data.md (ST-N01 to ST-N14). Not part of the design. */
@@ -24,6 +25,30 @@ export function PrototypeControls() {
             <strong>Prototype controls</strong>
             <span className="muted">Flip the shell states from the state catalogue.</span>
           </header>
+
+          <label className="proto-row">
+            <span>
+              Role <span className="muted">Picks the default workspace a new user lands on</span>
+            </span>
+            <select value={prefs.persona} onChange={(e) => set('persona', e.target.value as Persona)}>
+              {PERSONAS.map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.label}
+                </option>
+              ))}
+            </select>
+          </label>
+
+          <label className="proto-row">
+            <input type="checkbox" checked={prefs.newUser} onChange={(e) => set('newUser', e.target.checked)} />
+            <span>
+              New user <span className="muted">Only the role's default workspace; Workspace lands on it</span>
+            </span>
+          </label>
+
+          <button type="button" className="text-btn" onClick={() => set('lastWorkspaceId', null)} disabled={!prefs.lastWorkspaceId}>
+            Forget the last workspace opened
+          </button>
 
           <label className="proto-row">
             <input type="checkbox" checked={prefs.isAdmin} onChange={(e) => set('isAdmin', e.target.checked)} />
@@ -60,7 +85,7 @@ export function PrototypeControls() {
           <label className="proto-row">
             <input type="checkbox" checked={prefs.emptyGroup} onChange={(e) => set('emptyGroup', e.target.checked)} />
             <span>
-              Empty group <span className="muted">ST-N07: Workspace › Plans has nothing</span>
+              Empty group <span className="muted">ST-N07: Building Info › Data health has nothing</span>
             </span>
           </label>
 

@@ -52,6 +52,17 @@ code {
 .muted {
   color: var(--text-tertiary);
 }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
 .msym {
   font-family: 'Material Symbols Outlined';
   font-weight: normal;
@@ -415,10 +426,6 @@ code {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-.row-detail {
-  font-size: 16px;
-  color: var(--text-tertiary);
 }
 .row--disabled {
   color: var(--text-disabled);
@@ -893,6 +900,10 @@ code {
   font-weight: 500;
   align-self: flex-start;
 }
+.text-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
 .upgrade-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -915,6 +926,14 @@ code {
 .upgrade-card .btn {
   align-self: flex-start;
   margin-top: auto;
+}
+
+.row-lead {
+  font-size: 18px;
+  color: var(--text-tertiary);
+}
+.row[aria-current='page'] .row-lead {
+  color: inherit;
 }
 
 /* Filters over an item's records (People). Selected is marked by a check, not colour alone. */

@@ -105,7 +105,7 @@ Scope rides along as `?scope=portfolio` or `?scope=<property>`.
 
 | Rail item | Routes |
 |---|---|
-| Workspace | `/workspace/home` (default), `/workspace/dashboards`, `/workspace/dashboards/:id`, `/workspace/reports`, `/workspace/reports/:id`, `/workspace/plans`, `/workspace/plans/:id`, `/workspace/projects`, `/workspace/gallery` |
+| Workspace | `/workspace` lands on the last workspace opened, or the role's default for a new user. Each workspace is `/workspace/:id`: `reporting-readiness`, `exposure-by-asset`, `data-problems`, `attention-today` (one ready-made default per role), and `gresb-2026`, `q3-board-pack`, `net-zero-2030`, `west-region-exposure` (a returning user's own). The old Home, Dashboards, Reports, Plans, Projects and Gallery routes redirect |
 | Building Info | `/building-info/overview`; `/building-info/data-health/inbox`, `/sources`; `/building-info/utilities/coverage`, `/accounts`, `/bills`, `/energy-star`; `/building-info/record/details`, `/stacking-plan`, `/occupancy-hours`, `/policies`, `/accolades`, `/files`; `/building-info/equipment/equipment`, `/meters`, `/meter-health`, `/power-capacity`, `/one-line-diagram`, `/groups`, `/alerts` |
 | People | `/people/team` (filters: `members`, `teams`), `/people/tenants` (`tenants`, `requests`), `/people/partners` (`contractors`, `vendors`, `management-companies`), `/people/contacts`, `/people/agents`. The filter is `?filter=`; the old sub-page routes redirect to their item and filter |
 | Tenant Billing | `/tenant-billing` (upgrade page) |
@@ -114,7 +114,7 @@ Scope rides along as `?scope=portfolio` or `?scope=<property>`.
 | Account | `/account/profile`, `/preferences`, `/notification-settings`, `/entitlements` (Admin) |
 | Company | A modal, not a route |
 
-`/` redirects to `/workspace/home`. Every rail click and every panel row changes
+`/` redirects to `/workspace`, the app's home. Every rail click and every panel row changes
 the URL, so deep links and the back button keep the section (SYS-NAVPAT-02, ST-N13).
 
 ## Changes after review
@@ -125,6 +125,15 @@ the URL, so deep links and the back button keep the section (SYS-NAVPAT-02, ST-N
   page's records, kept in the URL as `?filter=`. Old sub-page routes redirect.
   This differs from SYS-NAVPAT-10 and the People spec's Panel and pages, which
   both describe collapsible groups.
+
+- **Workspace is a list of workspaces (2026-10-14).** Workspace is the app's
+  home, and a workspace is one canvas that can cover a dashboard, a report or a
+  plan. The panel is a flat list of workspaces: the Home, Dashboards, Reports,
+  Plans (with Projects) and Gallery groups are gone, and there is no Home page.
+  The rail item lands on the last workspace the user had open; a new user lands
+  on the ready-made default for their role (MOD-WS-01), which is the only one
+  they have. This differs from the Workspace spec's Panel and pages and from
+  MOD-WS-45 and 46, which define three artefact types kept in a library.
 
 ## Stack
 

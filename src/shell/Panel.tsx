@@ -3,7 +3,9 @@ import { NavLink } from 'react-router-dom';
 import type { GroupDef, PageDef, SectionDef } from '../nav/types';
 import { usePrefs } from '../state/preferences';
 import { useScopedPath } from '../state/scope';
+import { personaLabel } from '../nav/workspaces';
 import { Icon } from './Icon';
+import { WorkspaceList } from './WorkspaceList';
 
 interface Props {
   section: SectionDef;
@@ -54,7 +56,6 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
         ) : (
           <NavLink to={scoped(page.path!)} end className="row" onClick={onNavigate}>
             <span className="row-label">{page.label}</span>
-            {page.detail && <Icon name="subdirectory_arrow_right" className="row-detail" />}
           </NavLink>
         )}
         {!disabled && (
@@ -70,9 +71,10 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
 
   const renderGroup = (group: GroupDef) => {
     if (group.adminOnly && !prefs.isAdmin) return null;
-    const isEmpty = prefs.emptyGroup && section.id === 'workspace' && group.id === 'plans';
+    const isEmpty = prefs.emptyGroup && section.id === 'building-info' && group.id === 'data-health';
     const open = !collapsed[group.id];
     const pages = group.pages.filter((p) => !p.adminOnly || prefs.isAdmin);
+    if (pages.length === 0 && !isEmpty) return null;
     const listId = `group-${section.id}-${group.id}`;
     return (
       <li key={group.id} className="group">
@@ -127,7 +129,7 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
             <>
               <span className="panel-eyebrow">Account</span>
               <h2>Sam Rivera</h2>
-              <span className="panel-subtitle">Sustainability Lead · Sustainability persona</span>
+              <span className="panel-subtitle">{personaLabel(prefs.persona)}</span>
             </>
           ) : (
             <h2>
@@ -188,7 +190,10 @@ export function Panel({ section, mode, onClose, onNavigate }: Props) {
               <span>{section.primaryAction.label}</span>
             </button>
           )}
-          <ul className="groups">{section.groups.map(renderGroup)}</ul>
+          <ul className="groups">
+            {section.dynamicList === 'workspaces' && <WorkspaceList onNavigate={onNavigate} />}
+            {section.groups.map(renderGroup)}
+          </ul>
         </>
       )}
 

@@ -11,8 +11,8 @@ export function NotFoundPage() {
       <p className="muted">
         <code>{pathname}</code> is not a route in prototype 01. Every page in the IA is listed in the README.
       </p>
-      <Link className="btn" to={scoped('/workspace/home')}>
-        Go to Home
+      <Link className="btn" to={scoped('/workspace')}>
+        Go to your workspace
       </Link>
     </article>
   );

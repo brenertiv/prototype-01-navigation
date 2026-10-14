@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { navForPath } from '../nav/sections';
+import { findWorkspace, workspaceIdForPath } from '../nav/workspaces';
 import { useActiveFilter } from '../pages/PlaceholderPage';
 import { Icon } from './Icon';
 
@@ -14,15 +15,16 @@ export function AssistantDrawer({ phone, onClose }: Props) {
   const { pathname } = useLocation();
   const nav = navForPath(pathname);
   const filter = useActiveFilter(nav?.page);
-  const pageLabel = nav?.page?.label ?? nav?.section.label ?? 'this page';
+  const workspace = findWorkspace(workspaceIdForPath(pathname));
+  const pageLabel = workspace?.name ?? nav?.page?.label ?? nav?.section.label ?? 'this page';
   const boundTo = filter ? `${pageLabel} · ${filter.label}` : pageLabel;
-  const isArtefact = Boolean(nav?.page?.detail);
+  const isWorkspace = Boolean(workspace);
   const [expanded, setExpanded] = useState(false);
 
   const body = (
     <div className="drawer-body">
       <p className="muted">
-        The assistant drawer is a placeholder. In the production prototype it holds the thread {isArtefact ? 'of this artefact (MOD-WS-47)' : 'for this page'} and stays {phone ? 'a bottom sheet' : 'open'} across pages until you close it (SYS-AI-11).
+        The assistant drawer is a placeholder. In the production prototype it holds the thread {isWorkspace ? 'of this workspace (MOD-WS-47)' : 'for this page'} and stays {phone ? 'a bottom sheet' : 'open'} across pages until you close it (SYS-AI-11).
       </p>
       <div className="composer" aria-hidden="true">
         <span className="muted">Ask about {boundTo}…</span>
@@ -57,7 +59,7 @@ export function AssistantDrawer({ phone, onClose }: Props) {
           <h2>Assistant</h2>
           <p className="drawer-binding">
             Bound to <strong>{boundTo}</strong>
-            {isArtefact && <span className="chip chip--info">artefact thread</span>}
+            {isWorkspace && <span className="chip chip--info">workspace thread</span>}
           </p>
         </div>
         <button type="button" className="icon-btn" aria-label="Close assistant" onClick={onClose}>

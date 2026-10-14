@@ -33,8 +33,6 @@ export interface PageDef {
   disabledNote?: string;
   /** Row shown only to Admins. */
   adminOnly?: boolean;
-  /** A detail route (one artefact or record) rather than a list. */
-  detail?: boolean;
 }
 
 export interface GroupDef {
@@ -64,6 +62,8 @@ export interface SectionDef {
   headerActions: HeaderAction[];
   primaryAction?: { label: string; icon: string; adminOnly?: boolean };
   groups: GroupDef[];
+  /** The panel lists items from data that changes per user instead of fixed groups. */
+  dynamicList?: 'workspaces';
   footer?: { id: string; label: string; icon: string }[];
   /** SYS-NAVPAT-04: bought-able but not bought. Opens an upgrade page. */
   missing?: boolean;

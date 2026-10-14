@@ -1,5 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 
+/** The four ranked personas; the role a new user lands by (MOD-WS-01). */
+export type Persona = 'sl' | 'am' | 'pm' | 'be';
+
 /**
  * User preferences the shell persists (SYS-NAVPAT-11, SYS-AI-11) and the
  * prototype controls that flip shell states (ST-N01 to ST-N14).
@@ -7,6 +10,8 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useState, t
  */
 export interface Prefs {
   panelDocked: boolean;
+  /** The workspace the user last had open; the Workspace rail item lands on it. */
+  lastWorkspaceId: string | null;
   drawerOpen: boolean;
   theme: 'system' | 'light' | 'dark';
   // Prototype controls
@@ -17,10 +22,13 @@ export interface Prefs {
   loadingDelay: number;
   emptyGroup: boolean;
   noAccessSection: string | null;
+  persona: Persona;
+  newUser: boolean;
 }
 
 const DEFAULTS: Prefs = {
   panelDocked: true,
+  lastWorkspaceId: null,
   drawerOpen: false,
   theme: 'system',
   isAdmin: true,
@@ -30,6 +38,8 @@ const DEFAULTS: Prefs = {
   loadingDelay: 0,
   emptyGroup: false,
   noAccessSection: null,
+  persona: 'sl',
+  newUser: false,
 };
 
 const KEY = 'proto01.prefs';
