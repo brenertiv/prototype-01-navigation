@@ -9,9 +9,9 @@ Checked against the repo at commit `029dffd` (2026-10-14). Prototype commits:
 
 ## Part 1: Changes made after review
 
-Five directions from review, all on 2026-10-14. Changes 1 to 3 contradict
+Six directions from review, all on 2026-10-14. Changes 1 to 3 contradict
 agreed spec text, so each needs a decision-log entry before the specs change.
-Changes 4 and 5 settle points the spec left open.
+Changes 4 to 6 settle points the spec left open.
 
 ### 1. The People panel is a flat list; sub-pages become filters
 
@@ -144,6 +144,22 @@ label.
 - `02-building/system/navigation-pattern.md`, SYS-NAVPAT-31: it says only that
   a tooltip is not the label. Add when the tooltip shows, and that it gives way
   to the peek while the panel is collapsed.
+
+### 6. Icons use weight 300
+
+**What changed.** Every icon uses Material Symbols Outlined at weight 300,
+lighter than the font's default of 400. The weight is one token, so filled
+icons, such as the active rail item, use it too.
+
+**Docs to update**
+
+- `02-building/design-system/icons.md`, CMP-ICON-01: it names Material Symbols
+  but not the style or the weight. Add Outlined, weight 300, and that fill marks
+  a selected state.
+- `02-building/design-system/icons.md`, CMP-ICON-03: it calls for one icon per
+  meaning, kept in a list. No list exists yet. The prototype's icons are a
+  starting point, and one clash needs resolving: `add` means both "create" on
+  New and "not in your account" on the upgradable rail badge.
 
 ### Interim step, superseded
 

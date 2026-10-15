@@ -18,6 +18,17 @@
         "preview:pages"
       ],
       "port": 4174
+    },
+    {
+      "name": "nav-prototype-alt-port",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "vite",
+        "--port",
+        "5175",
+        "--strictPort"
+      ],
+      "port": 5175
     }
   ]
 }

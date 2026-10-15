@@ -77,7 +77,8 @@ code {
   -webkit-font-feature-settings: 'liga';
   font-feature-settings: 'liga';
   flex: none;
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  /* Fill is set per icon through --icon-fill; the weight comes from the token. */
+  font-variation-settings: 'FILL' var(--icon-fill, 0), 'wght' var(--icon-weight), 'GRAD' 0, 'opsz' 24;
 }
 
 :focus-visible {
